@@ -8,7 +8,9 @@ return [
         'http://127.0.0.1:5173',
         'https://booking-system-ilkham.vercel.app',
     ],
-    'allowed_origins_patterns' => [],
+    'allowed_origins_patterns' => [
+        '#^https://booking-system-.*-ilkham\.vercel\.app$#',
+    ],
     'allowed_headers' => ['*'],
     'exposed_headers' => [],
     'max_age' => 0,
