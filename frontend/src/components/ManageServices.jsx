@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../api';
 import { Plus, Edit2, Trash2, X, Save } from 'lucide-react';
 import toast from 'react-hot-toast';
 import ManageServices from './components/ManageServices';
@@ -22,7 +22,7 @@ function ManageServices() {
 
   const loadServices = async () => {
     try {
-      const response = await axios.get('http://127.0.0.1:8000/api/admin/services');
+        const response = await api.get('/api/admin/services');
       if (response.data.success) {
         setServices(response.data.data);
       }
@@ -37,10 +37,10 @@ function ManageServices() {
     e.preventDefault();
     try {
       if (editingService) {
-        await axios.put(`http://127.0.0.1:8000/api/admin/services/${editingService.id}`, formData);
+        await api.put(`/api/admin/services/${editingService.id}`, formData);
         toast.success('Услуга обновлена');
       } else {
-        await axios.post('http://127.0.0.1:8000/api/admin/services', formData);
+        await api.post('/api/admin/services', formData);
         toast.success('Услуга создана');
       }
       setShowForm(false);
@@ -66,7 +66,7 @@ function ManageServices() {
   const handleDelete = async (id) => {
     if (window.confirm('Удалить эту услугу?')) {
       try {
-        await axios.delete(`http://127.0.0.1:8000/api/admin/services/${id}`);
+        await api.delete(`/api/admin/services/${id}`);
         toast.success('Услуга удалена');
         loadServices();
       } catch (error) {

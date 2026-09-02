@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import axios from 'axios';
+import api from '../api';
 import { Link } from 'react-router-dom';
 import { Mail, Lock, LogIn } from 'lucide-react';
 
@@ -15,14 +15,12 @@ function Login() {
     setLoading(true);
 
     try {
-      const response = await axios.post('http://127.0.0.1:8000/api/login', { email, password });
+      const response = await api.post('/api/login', { email, password });
 
       if (response.data.success) {
         localStorage.setItem('token', response.data.token);
         localStorage.setItem('user', JSON.stringify(response.data.user));
-        axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
-        
-        // Жёсткий редирект
+        api.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
         window.location.href = '/';
       }
     } catch (error) {

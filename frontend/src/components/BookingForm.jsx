@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../api';
 import toast from 'react-hot-toast';
-import { motion } from 'framer-motion'; // <-- ДОБАВЬ ЭТУ СТРОКУ!
+import { motion } from 'framer-motion';
 import { X, Calendar, Clock, MessageSquare } from 'lucide-react';
 
 function BookingForm({ service, userId, onClose }) {
@@ -17,7 +17,7 @@ function BookingForm({ service, userId, onClose }) {
 
   const loadSchedules = async () => {
     try {
-      const response = await axios.get(`http://127.0.0.1:8000/api/schedules?service_id=${service.id}`);
+      const response = await api.get(`/api/schedules?service_id=${service.id}`);
       if (response.data.success) setSchedules(response.data.data);
     } catch (error) {
       console.error('Ошибка загрузки расписания:', error);
@@ -42,7 +42,7 @@ function BookingForm({ service, userId, onClose }) {
     };
 
     try {
-      const response = await axios.post('http://127.0.0.1:8000/api/bookings', bookingData);
+      const response = await api.post('/api/bookings', bookingData);
       if (response.data.success) {
         toast.success('🎉 Бронирование успешно создано!');
         setTimeout(onClose, 1500);

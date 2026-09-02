@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import axios from 'axios'; // Обязательно для отправки запроса
+import api from '../api';
 import { Link, useNavigate } from 'react-router-dom';
 import { User, Mail, Lock, UserPlus } from 'lucide-react';
 
@@ -25,7 +25,7 @@ function Register() {
     }
 
     try {
-      const response = await axios.post('http://127.0.0.1:8000/api/register', {
+      const response = await api.post('/api/register', {
         name,
         email,
         password,
@@ -36,7 +36,7 @@ function Register() {
         
         localStorage.setItem('token', response.data.token);
         localStorage.setItem('user', JSON.stringify(response.data.user));
-        axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
+        api.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
         
         
         window.location.href = '/';
