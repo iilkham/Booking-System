@@ -1,7 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from "./AuthContext";
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Toaster } from 'react-hot-toast';
 import Hero from './components/Hero';
@@ -11,6 +10,7 @@ import MyBookings from './components/MyBookings';
 import Login from './components/Login';
 import Register from './components/Register';
 import { LogOut, User, Crown } from 'lucide-react';
+import api from './api';
 
 function AppContent() {
   const { user, logout, loading } = useAuth();
@@ -21,13 +21,13 @@ function AppContent() {
 
   useEffect(() => {
     if (user) {
-      axios.get('http://127.0.0.1:8000/api/services')
+      api.get('/api/services')
         .then(response => {
           if (response.data.success) setServices(response.data.data);
         })
         .catch(err => console.error(err));
 
-      axios.get('http://127.0.0.1:8000/api/bookings/my', { params: { user_id: user.id } })
+      api.get('/api/bookings/my', { params: { user_id: user.id } })
         .then(response => {
           if (response.data.success) setBookingsCount(response.data.data.length);
         })
@@ -165,7 +165,7 @@ function AdminDashboard() {
 
   const loadAllBookings = async () => {
     try {
-      const response = await axios.get('http://127.0.0.1:8000/api/admin/bookings');
+      const response = await api.get('/api/admin/bookings');
       if (response.data.success) setBookings(response.data.data);
     } catch (error) {
       console.error('Ошибка загрузки:', error);
@@ -176,7 +176,7 @@ function AdminDashboard() {
 
   const updateStatus = async (bookingId, newStatus) => {
     try {
-      await axios.put(`http://127.0.0.1:8000/api/admin/bookings/${bookingId}`, { status: newStatus });
+      await api.put(`/api/admin/bookings/${bookingId}`, { status: newStatus });
       loadAllBookings();
     } catch (error) {
       console.error('Ошибка обновления:', error);
@@ -222,7 +222,7 @@ function AdminDashboard() {
                       booking.status === 'cancelled' ? 'bg-red-100 text-red-700 border-red-200' :
                       'bg-yellow-100 text-yellow-700 border-yellow-200'
                     }`}>
-                      {booking.status === 'confirmed' ? '✅ Подтверждено' : booking.status === 'cancelled' ? '❌ Отменено' : '⏳ Ожидает'}
+                      {booking.status === 'confirmed' ? '✅ Подтверждено' : booking.status === 'cancelled' ? '❌ Отменено' : ' Ожидает'}
                     </span>
                   </td>
                   <td className="px-4 py-4 text-right">
