@@ -33,16 +33,12 @@ function Register() {
       });
       
       if (response.data.success) {
-        
         localStorage.setItem('token', response.data.token);
         localStorage.setItem('user', JSON.stringify(response.data.user));
         api.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
-        
-        
         window.location.href = '/';
       }
     } catch (error) {
-      
       if (error.response?.data?.errors) {
         const errors = error.response.data.errors;
         const firstError = Object.values(errors)[0][0];
@@ -88,7 +84,7 @@ function Register() {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Введите пароль"
+                placeholder="Введите имя"
                 required
               />
             </div>
@@ -118,7 +114,7 @@ function Register() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Минимум 6 символов"
+                placeholder="Придумайте пароль"
                 required
               />
             </div>
