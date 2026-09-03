@@ -10,7 +10,7 @@ return [
         'https://booking-system-ilkham.vercel.app',
     ],
     'allowed_origins_patterns' => [
-        '#^https://booking-system-.*\.vercel\.app$#',  
+        '#^https://booking-system-.*\.vercel\.app$#',
     ],
     'allowed_headers' => ['*'],
     'exposed_headers' => [],
